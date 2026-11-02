@@ -1,28 +1,28 @@
 class Reoclo < Formula
   desc "Reoclo CLI"
   homepage "https://reoclo.com"
-  version "0.94.1"
+  version "0.95.0"
   license "MIT"
 
   on_macos do
     on_intel do
-      url "https://github.com/reoclo/cli/releases/download/v0.94.1/reoclo-darwin-x64"
-      sha256 "01f5b4d0f7dfc41a117bbaab6b56c25e7228d4aec4163dc7a92563d491c5ebb5"
+      url "https://github.com/reoclo/cli/releases/download/v0.95.0/reoclo-darwin-x64"
+      sha256 "77841a1b8aea94dacfaf2c37595f82c6d6e03f2c05e1f6bb22fd44e65b1fb5eb"
     end
     on_arm do
-      url "https://github.com/reoclo/cli/releases/download/v0.94.1/reoclo-darwin-arm64"
-      sha256 "d099a2fc384ab70bccfdbaf0b4860cfe8d31b05e9672ca56e6b219cfe5a43299"
+      url "https://github.com/reoclo/cli/releases/download/v0.95.0/reoclo-darwin-arm64"
+      sha256 "2575da4416663e83abbcdcda2bcde7d38d0587ff405d6c4837e7883743c7e1c8"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/reoclo/cli/releases/download/v0.94.1/reoclo-linux-x64"
-      sha256 "d9618d524697a9bb26ede846db110208996d87a77e791f6191f626a9056a2cd5"
+      url "https://github.com/reoclo/cli/releases/download/v0.95.0/reoclo-linux-x64"
+      sha256 "35412efc3ebc8953d68dff7bbc3c49c9ae0ad53597513a3147af01f685f29b34"
     end
     on_arm do
-      url "https://github.com/reoclo/cli/releases/download/v0.94.1/reoclo-linux-arm64"
-      sha256 "57544992be80a121244cbe2e3bfeb28647863b6ae2a730b4fadb25d104a9173f"
+      url "https://github.com/reoclo/cli/releases/download/v0.95.0/reoclo-linux-arm64"
+      sha256 "b95e12a369dfd5a7e477ac46d039fb46b472faf1f950c68e2f314cef4495fc82"
     end
   end
 
@@ -31,6 +31,6 @@ class Reoclo < Formula
   end
 
   test do
-    assert_match(/^0.94.1$/, shell_output("#{bin}/reoclo --version").strip)
+    assert_match(/^0.95.0$/, shell_output("#{bin}/reoclo --version").strip)
   end
 end
