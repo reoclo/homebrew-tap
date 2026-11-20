@@ -1,8 +1,8 @@
 cask "reoclo-desktop" do
-  version "0.5.0"
-  sha256 "3063cc32f5c7c59434d0b1adcf935da53a54581d1d098c047f4f3604fad06390"
+  version "0.6.0"
+  sha256 "e407d0548a3123b45239fc88048713c48ead59af0cf315023c892f1d04608f6a"
 
-  url "https://github.com/reoclo/desktop/releases/download/v0.5.0/Reoclo-0.5.0.dmg"
+  url "https://github.com/reoclo/desktop/releases/download/v0.6.0/Reoclo-0.6.0.dmg"
   name "Reoclo"
   desc "Native menu bar app for Reoclo tunnels"
   homepage "https://reoclo.com"
