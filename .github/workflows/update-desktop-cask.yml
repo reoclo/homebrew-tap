@@ -1,0 +1,58 @@
+name: Update desktop cask
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+concurrency:
+  group: update-desktop-cask
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Read latest desktop release
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api repos/reoclo/desktop/releases/latest > "$RUNNER_TEMP/release.json"
+          version="$(jq -r '.tag_name | ltrimstr("v")' "$RUNNER_TEMP/release.json")"
+          [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          url="$(jq -er --arg name "Reoclo-$version.dmg" '.assets[] | select(.name == $name) | .browser_download_url' "$RUNNER_TEMP/release.json")"
+          [[ "$url" == "https://github.com/reoclo/desktop/releases/download/v$version/Reoclo-$version.dmg" ]] || exit 1
+          curl --fail --location --proto '=https' --tlsv1.2 "$url" -o "$RUNNER_TEMP/Reoclo.dmg"
+          sha="$(sha256sum "$RUNNER_TEMP/Reoclo.dmg" | cut -d ' ' -f 1)"
+          echo "DESKTOP_VERSION=$version" >> "$GITHUB_ENV"
+          echo "DESKTOP_URL=$url" >> "$GITHUB_ENV"
+          echo "DESKTOP_SHA=$sha" >> "$GITHUB_ENV"
+      - name: Refresh cask
+        shell: ruby {0}
+        run: |
+          path = "Casks/reoclo-desktop.rb"
+          original = File.read(path)
+          updated = original
+            .sub(/^  version .*$/, "  version \"#{ENV.fetch('DESKTOP_VERSION')}\"")
+            .sub(/^  url .*$/, "  url \"#{ENV.fetch('DESKTOP_URL')}\"")
+            .sub(/^  sha256 .*$/, "  sha256 \"#{ENV.fetch('DESKTOP_SHA')}\"")
+            .sub(/^  # The tap workflow replaces this with the published DMG checksum\.\n/, "")
+          File.write(path, updated) if updated != original
+      - name: Commit changed release
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- Casks/reoclo-desktop.rb; then
+            echo "Desktop cask is current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks/reoclo-desktop.rb
+          git commit -m "Update reoclo-desktop to $DESKTOP_VERSION"
+          git push
