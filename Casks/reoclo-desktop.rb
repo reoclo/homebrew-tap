@@ -1,9 +1,8 @@
 cask "reoclo-desktop" do
   version "0.5.0"
-  # The tap workflow replaces this with the published DMG checksum.
-  sha256 :no_check
+  sha256 "3063cc32f5c7c59434d0b1adcf935da53a54581d1d098c047f4f3604fad06390"
 
-  url "https://github.com/reoclo/desktop/releases/download/v#{version}/Reoclo-#{version}.dmg"
+  url "https://github.com/reoclo/desktop/releases/download/v0.5.0/Reoclo-0.5.0.dmg"
   name "Reoclo"
   desc "Native menu bar app for Reoclo tunnels"
   homepage "https://reoclo.com"
