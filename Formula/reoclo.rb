@@ -2,7 +2,7 @@ class Reoclo < Formula
   desc "Reoclo CLI"
   homepage "https://reoclo.com"
   version "0.120.0"
-  license "MIT"
+  license "Apache-2.0"
 
   on_macos do
     on_intel do
